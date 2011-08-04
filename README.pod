@@ -24,7 +24,7 @@ plexus.pl - A Perl-based static site generator.
 In Latin, I<plexus> means "twisted" or "woven". B<plexus.pl> takes a bunch of
 simple, modularized files and weaves them into a static web page.
 
-
+=head1 FILES
 
 =over 4
 
@@ -32,8 +32,6 @@ simple, modularized files and weaves them into a static web page.
 =item * config.yaml	- YAML config file, using Config::YAML.
 =item * head.css	- CSS code to be included in the head.
 =item * head.js		- JavaScript code to be included in the head.
-
-
 =item * Here's another item.
 
 =back
