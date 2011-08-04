@@ -3,56 +3,28 @@
 #
 #         FILE:  README.pod
 #
-#  DESCRIPTION:  
+#  DESCRIPTION:  plexus.pl documentation
 #
 #       AUTHOR:  Daniel Bolton (), <dan at dbbo dot us>
 #      COMPANY:  
-#      CREATED:  07/18/2011
-#     REVISION:  ---
+#      CREATED:  18/07/2011
+#     REVISION:  04/08/2011
 #===============================================================================
 
 =head1 NAME
 
-MYNAME - A Perl-based static site generator.
+plexus.pl - A Perl-based static site generator.
 
 =head1 SYNOPSIS
 
-    $here->isa(Piece::Of::Code);
-    print <<"END";
-    This indented block will not be scanned for formatting
-    codes or directives, and spacing will be preserved.
-    END
+	plexus.pl [OPTIONS]
 
 =head1 DESCRIPTION
 
-Here's some normal text.  It includes text that is
-B<bolded>, I<italicized>, U<underlined>, and 
-C<$code>-formatted.
+In Latin, I<plexus> means "twisted" or "woven". B<plexus.pl> takes a bunch of
+simple, modularized files and weaves them into a static web page.
 
-=head2 An Example List
 
-=over 4
-
-=item * This is a bulleted list.
-
-=item * Here's another item.
-
-=back
-
-=begin html
-
-<img src="Example.png" align="right" alt="Figure 1." />
-<p>
-    Here's some embedded HTML.  In this block I can 
-    include images, apply <span style="color: green">
-    styles</span>, or do anything else I can do with
-    HTML.  pod parsers that aren't outputting HTML will
-    completely ignore it.
-</p>
-
-=end html
-
-=head1 FILES
 
 =over 4
 
@@ -76,7 +48,7 @@ Copyright 2011 Daniel Bolton.
 
 Permission is granted to copy, distribute and/or modify this 
 document under the terms of the GNU Free Documentation 
-License, Version 1.2 or any later version published by the 
+License, Version 3.0 or any later version published by the 
 Free Software Foundation; with no Invariant Sections, with 
 no Front-Cover Texts, and with no Back-Cover Texts.
 
