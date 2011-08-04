@@ -1,0 +1,85 @@
+#
+#===============================================================================
+#
+#         FILE:  README.pod
+#
+#  DESCRIPTION:  
+#
+#       AUTHOR:  Daniel Bolton (), <dan at dbbo dot us>
+#      COMPANY:  
+#      CREATED:  07/18/2011
+#     REVISION:  ---
+#===============================================================================
+
+=head1 NAME
+
+MYNAME - A Perl-based static site generator.
+
+=head1 SYNOPSIS
+
+    $here->isa(Piece::Of::Code);
+    print <<"END";
+    This indented block will not be scanned for formatting
+    codes or directives, and spacing will be preserved.
+    END
+
+=head1 DESCRIPTION
+
+Here's some normal text.  It includes text that is
+B<bolded>, I<italicized>, U<underlined>, and 
+C<$code>-formatted.
+
+=head2 An Example List
+
+=over 4
+
+=item * This is a bulleted list.
+
+=item * Here's another item.
+
+=back
+
+=begin html
+
+<img src="Example.png" align="right" alt="Figure 1." />
+<p>
+    Here's some embedded HTML.  In this block I can 
+    include images, apply <span style="color: green">
+    styles</span>, or do anything else I can do with
+    HTML.  pod parsers that aren't outputting HTML will
+    completely ignore it.
+</p>
+
+=end html
+
+=head1 FILES
+
+=over 4
+
+=item * config		- Default config file location, using Config::File.
+=item * config.yaml	- YAML config file, using Config::YAML.
+=item * head.css	- CSS code to be included in the head.
+=item * head.js		- JavaScript code to be included in the head.
+
+
+=item * Here's another item.
+
+=back
+
+=head1 SEE ALSO
+
+L<perldoc>, L<Config::File>,L<Config::YAML>.
+
+=head1 COPYRIGHT
+
+Copyright 2011 Daniel Bolton.
+
+Permission is granted to copy, distribute and/or modify this 
+document under the terms of the GNU Free Documentation 
+License, Version 1.2 or any later version published by the 
+Free Software Foundation; with no Invariant Sections, with 
+no Front-Cover Texts, and with no Back-Cover Texts.
+
+=cut
+
+

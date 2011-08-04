@@ -1,0 +1,50 @@
+# WebGen config file
+#
+# Don't quote your values. You don't need to:
+# http://search.cpan.org/~gwolf/Config-File-1.50/lib/Config/File.pm
+
+# Using ~ or $ENV{HOME} is fine.
+working_dir =   ~/projects/plexus
+output_dir  =   ~/projects/plexus
+output_file =   out.html
+
+domain      =   demus.co
+page        =   Home
+
+# Values for doctype:
+# h5     ->     html  5 (default)
+# h4f    ->     html  4.01 frameset
+# h4s    ->     html  4.01 strict
+# h4t    ->     html  4.01 transitional
+# x1f    ->     xhtml 1.0 frameset
+# x1s    ->     xhtml 1.0 strict
+# x1t    ->     xhtml 1.0 transitional
+# x11    ->     xhtml 1.1
+doctype     =   html5
+
+# Two-letter lang codes are fine for HTML5. Others should use:
+# (two letter lang code)-(two letter region code)
+# E.g. en or en-US
+lang        =   en
+
+# You're crazy NOT to use utf-8
+charset     =   utf-8
+title       =   $page - $domain
+author      =   Daniel Bolton
+favicon     =   /favicon.png
+styles      =   /css/dark.css
+foo = "bar"
+bar = \$foo
+boo = $foo
+do	= $23434dfsdfdsfv0
+go	= $foo.bar 
+
+
+
+# Footer stuff
+copyright_year	=	2011
+license_name	=	Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+license_url		=	http://creativecommons.org/licenses/by-nc-sa/3.0/
+
+# Custom vars
+# Names may only contain letters, numbers, _ and -
