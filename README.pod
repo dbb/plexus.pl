@@ -29,10 +29,12 @@ simple, modularized files and weaves them into a static web page.
 =over 4
 
 =item * config		- Default config file location, using Config::File.
+
 =item * config.yaml	- YAML config file, using Config::YAML.
+
 =item * head.css	- CSS code to be included in the head.
+
 =item * head.js		- JavaScript code to be included in the head.
-=item * Here's another item.
 
 =back
 
