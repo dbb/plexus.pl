@@ -3,10 +3,25 @@
 # Don't quote your values. You don't need to:
 # http://search.cpan.org/~gwolf/Config-File-1.50/lib/Config/File.pm
 
+# Directories ###############################################################
 # Using ~ or $ENV{HOME} is fine.
 working_dir =   .
 output_dir  =   .
+
+# Files #####################################################################
+# Use STDOUT if you just want to print the output to the console.
 output_file =   out.html
+# If you use these names, you don't need to set these values (plexus.pl will
+# read them by default
+#body_file	=	body.md
+#body_file	=	body.html
+# if head_file is set, it alone will end up as the contents of <head>
+#head_file = head.html
+
+# No. of spaces to indent each child. Default is one. E.g.:
+# <html>
+#  <head>
+indentation	= 1
 
 domain      =   demus.co
 page        =   Home
@@ -32,7 +47,8 @@ charset     =   utf-8
 title       =   $page - $domain
 author      =   Daniel Bolton
 favicon     =   /favicon.png
-styles      =   /css/dark.css
+# Space-separated list of stylesheets
+styles      =   /css/default.css /css/alt.css
 foo = "bar"
 bar = \$foo
 boo = $foo
@@ -48,3 +64,8 @@ license_url		=	http://creativecommons.org/licenses/by-nc-sa/3.0/
 
 # Custom vars
 # Names may only contain letters, numbers, _ and -
+# You can use these in your markup via $$. E.g.
+# example_var = Some string of characters.
+# Then, in body.md:
+# My string was $$example_var
+test_var = A-a_B-b_12

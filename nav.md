@@ -1,3 +1,3 @@
-- [first](/)
-- [second](/second.html)
-- [third](/third.html)
+1. [first](/)
+1. [second](/second.html)
+1. [third](/third.html)
