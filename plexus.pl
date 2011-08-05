@@ -51,8 +51,8 @@ say '--------------------------------------'
     . '--------------------------------------'
     if $out eq 'STDOUT';
 
-say $out $head;
-say $out $body;
+print $out $head;
+print $out $body;
 
 close $out;
 
@@ -214,8 +214,20 @@ sub head {
 
     my @styles = split '\s+', $ch->{ 'styles' };
     for ( @styles ) {
-        $header .= $is . '<link rel="stylesheet" href="' . $_ . '" />' . "\n";
-    }
+        $header .=
+              $is
+            . '<link rel="stylesheet" href="http://'
+            . 'fonts.googleapis.com/css?family='
+            . $_ . '" />' . "\n";
+    } ## end for ( @styles )
+
+    my @fonts = split '\s+', $ch->{ 'google_fonts' };
+    for ( @fonts ) {
+        $header .=
+              $is
+            . '<link type="text/css" rel="stylesheet" href="'
+            . $_ . '" />' . "\n";
+    } ## end for ( @fonts )
 
     # end stylesheets
 
@@ -225,19 +237,19 @@ sub head {
         say "Including '$wd/head.css' in <head>.";
         $header .= $is . '<style type="text/css">' . "\n";
         open( my $head_css, "<", "$wd/head.css" );
-        $header .= $_ while <$head_css>;
+        $header .= $is x 4 . $_ while <$head_css>;
         $header .= $is . "</style>\n";
         close $head_css;
     } ## end if ( -f "$wd/head.css")
     if ( -f "$wd/head.js" ) {
         say "Including '$wd/head.js' in <head>.";
-        $header .= $is . '<sscript type="text/javascript">' . "\n";
+        $header .= $is . '<script type="text/javascript">' . "\n";
         open( my $head_js, "<", "$wd/head.js" );
-        $header .= $_ while <$head_js>;
+        $header .= $is x 4 . $_ while <$head_js>;
         $header .= $is . "</script>\n";
         close $head_js;
     } ## end if ( -f "$wd/head.js" )
-    $header .= "</head>\n\n";
+    $header .= "</head>\n";
     return $header;
 
 }    # end &head
@@ -311,10 +323,15 @@ sub intpl {
         #       return $_;
 
         # this is if a double sigile is used, $$var
-        if ( /\$\$([\w-]+)/ ) {
+        while ( /\$\$([\w-]+)/ ) {
             my $key = $1;
-            s/\$\$$key/$ch->{$key}/;
-        }
+            if ( $ch->{ $key } ) {
+                s/\$\$$key/$ch->{$key}/;
+            }
+            else {
+                s/\$\$/&#36;&#36/;
+            }
+        } ## end while ( /\$\$([\w-]+)/ )
         return $_;
     }    # end for @_
 }    # end intpl
