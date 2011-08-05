@@ -49,12 +49,6 @@ author      =   Daniel Bolton
 favicon     =   /favicon.png
 # Space-separated list of stylesheets
 styles      =   /css/default.css /css/alt.css
-foo = "bar"
-bar = \$foo
-boo = $foo
-do	= $23434dfsdfdsfv0
-go	= $foo.bar 
-
 
 
 # Footer stuff
