@@ -22,7 +22,9 @@ plexus.pl - A Perl-based static site generator.
 =head1 DESCRIPTION
 
 In Latin, I<plexus> means "twisted" or "woven". B<plexus.pl> takes a bunch of
-simple, modularized files and weaves them into a static web page.
+simple, modularized files and weaves them into a static web page ( so, OK, maybe it should be called I<plecto> or better yet, since it's a command, I<plecte> ).
+
+At the time of writing, 04 August 2011, B<plexus> is far from completion and not really even ready for testing. Use at your own risk.
 
 =head1 FILES
 
@@ -53,5 +55,4 @@ Free Software Foundation; with no Invariant Sections, with
 no Front-Cover Texts, and with no Back-Cover Texts.
 
 =cut
-
 
