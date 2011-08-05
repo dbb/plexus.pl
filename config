@@ -4,8 +4,8 @@
 # http://search.cpan.org/~gwolf/Config-File-1.50/lib/Config/File.pm
 
 # Using ~ or $ENV{HOME} is fine.
-working_dir =   ~/projects/plexus
-output_dir  =   ~/projects/plexus
+working_dir =   .
+output_dir  =   .
 output_file =   out.html
 
 domain      =   demus.co
