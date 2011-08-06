@@ -1,4 +1,8 @@
 #!/usr/bin/env perl
+
+# plexus.pl
+# https://github.com/dbbolton/plexus.pl
+
 use 5.010;
 use strict;
 use warnings;
