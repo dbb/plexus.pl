@@ -68,7 +68,6 @@ sub defaults {
     $is = ' ' x $il                     // ' ';
     $od = $ch->{ 'output_dir' }         // '.';
     $of = $ch->{ 'output_file' }        // 'plexus_output.html';
-    $wd = $ch->{ 'working_dir' }        // '.';
 
 } ## end sub defaults
 
@@ -113,10 +112,10 @@ sub load_configs {
 #
 #
 sub setup {
-
     # Expand ~ to $HOME. Future versions will utilize File::HomeDir.
-    s#^~/#$ENV{HOME}/# for values %{ $ch };
+    s#~[/\s]#$ENV{HOME}/# for values %{ $ch };
 
+    $wd = $ch->{ 'working_dir' }        // '.';
     chdir $wd;
 
     unless ( $of eq 'STDOUT' ) {
