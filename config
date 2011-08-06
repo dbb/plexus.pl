@@ -47,7 +47,7 @@ page            = Home
 # x1s    ->     xhtml 1.0 strict
 # x1t    ->     xhtml 1.0 transitional
 # x11    ->     xhtml 1.1
-doctype         = html5
+doctype         = h5
 
 # head ######################################################################
 lang            = en
