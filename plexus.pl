@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 # plexus.pl
-# https://github.com/dbbolton/plexus.pl
+# https://github.com/dbb/plexus.pl
 
 use 5.010;
 use strict;
