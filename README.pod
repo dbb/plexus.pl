@@ -19,6 +19,18 @@ plexus.pl - A Perl-based static site generator.
 
 	plexus.pl [OPTIONS]
 
+=head1 DEPENDENCIES
+
+=over 4
+
+=item * B<perl> - version 5.10 or above
+
+=item * B<Config::File> - Debian: libconfig-file-perl
+
+=item * B<Text::Markdown> - Debian: libtext-markdown-perl
+
+=back
+
 =head1 DESCRIPTION
 
 In Latin, I<plexus> means "twisted" or "woven". B<plexus.pl> takes a bunch of
