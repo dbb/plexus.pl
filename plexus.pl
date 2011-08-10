@@ -9,11 +9,14 @@ use warnings;
 use autodie;
 use Config::File;                 # Debian: libconfig-file-perl
 use File::Copy;
+use File::Find;
 use Text::Markdown 'markdown';    # Debian: libtext-markdown-perl
 
 # global vars ###############################################################
 my $ch;                           # config hash
 my $out;
+
+my $top_dir = $ARGV[0] // $ENV{PWD};
 
 # abbreviations
 my $cs;                           # CharSet
@@ -23,6 +26,8 @@ my $is;                           # Indentation string
 my $od;                           # Output Directory
 my $of;                           # Output File
 my $wd;                           # Working directory
+
+my @sub_dirs;                     # used for recursive building
 
 my %docs = (
     'h4f' => '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" '
@@ -45,20 +50,31 @@ my %docs = (
 # end global vars ###########################################################
 
 # Sub calls
-&load_configs;
-&defaults;
-&setup;
-my $head = &head;
-my $body = &body;
+&find_dirs( $top_dir );
 
-say '--------------------------------------'
-    . '--------------------------------------'
-    if $out eq 'STDOUT';
+for ( @sub_dirs ) {
+    $wd = $_;
+    &load_configs( $wd );
+    &defaults;
+    &setup( $wd );
 
-print $out $head;
-print $out $body;
+    my $head = &head;
+    my $body = &body;
 
-close $out;
+    print $out $head;
+    print $out $body;
+
+    close $out;
+}
+
+#my $head = &head;
+#my $body = &body;
+#
+#say '--------------------------------------'
+#    . '--------------------------------------'
+#    if $out eq 'STDOUT';
+#
+
 
 # End sub calls
 
@@ -79,7 +95,17 @@ sub defaults {
 #
 #
 #
+sub find_dirs {
+    my $dir = shift;
+    find( \&wanted, $dir );
+} ## end sub find_dirs
+
+
+
+
 sub load_configs {
+    my $dir = shift;
+    say "loading configs from $dir";
     my $local_cfg;
 
     # Ensure that ~/.plexusrc exists then load it
@@ -96,9 +122,9 @@ sub load_configs {
     $ch = Config::File::read_config_file( "$ENV{HOME}/.plexusrc" );
 
     # Check for ./config
-    if ( -f 'config' ) {
-        say "Loading local config file 'config'.";
-        $local_cfg = Config::File::read_config_file( 'config' );
+    if ( -f "$dir/config" ) {
+        say "Loading local config file '$dir/config'.";
+        $local_cfg = Config::File::read_config_file( "$dir/config" );
     }
     else {
         say "Local config file 'config' not found.";
@@ -116,11 +142,12 @@ sub load_configs {
 #
 #
 sub setup {
+    my $dir = shift;
+    say "setting up $dir";
     # Expand ~ to $HOME. Future versions will utilize File::HomeDir.
     s#~[/\s]#$ENV{HOME}/# for values %{ $ch };
 
-    $wd = $ch->{ 'working_dir' }        // '.';
-    chdir $wd;
+    chdir $dir;
 
     unless ( $of eq 'STDOUT' ) {
         move $of, "$of.orig" if -f $of;
@@ -138,7 +165,7 @@ sub head {
 
     # If there's a head_file, we'll use it alone for <head>
     if ( $ch->{ 'head_file' } ) {
-        open( my $fh, "<", "$ch->{'head_file'}" );
+        open my $fh, "<", "$ch->{'head_file'}";
         $header .= $_ for <$fh>;
         close $fh;
         return $header;
@@ -263,11 +290,25 @@ sub head {
 #
 sub body {
     my $content = "<body>\n";
-    $content .= &read_file( "nav" ) if $dt eq 'html5';
+
+    for ( 'nav', 'nav.html', 'nav.md' ) {
+        if ( -f $_ ) {
+            $content .= &read_file( "nav" );
+        }
+    }
+
     $content .= &read_file( "body" );
-    $content .= &read_file( "footer" );
+
+    for ( 'footer', 'footer.html', 'footer.md' ) {
+        if ( -f $_ ) {
+            $content .= &read_file( "footer" );
+        }
+    }
+
     $content .= "</body>\n</html>\n";
+
     return $content;
+
 }    # end &body
 
 #
@@ -276,6 +317,7 @@ sub body {
 #
 sub read_file {
     my $name = shift;
+    say "reading file $name";
     my $text = "<$name>\n" unless $name eq 'body';
     my $content;
 
@@ -325,7 +367,7 @@ sub intpl {
         #       }    # end while
         #       return $_;
 
-        # this is if a double sigile is used, $$var
+        # this is if a double sigil is used, $$var
         while ( /\$\$([\w-]+)/ ) {
             my $key = $1;
             if ( $ch->{ $key } ) {
@@ -342,7 +384,11 @@ sub intpl {
 #
 #
 #
-
+sub wanted {
+    if ( -d ) {
+        push @sub_dirs, $File::Find::name unless $File::Find::name =~ m#/\.#;
+    }
+}
 
 # End Subs ##################################################################
 #close $out;
