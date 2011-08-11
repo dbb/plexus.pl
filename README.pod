@@ -58,7 +58,7 @@ files found inside the top directory ) and a "recent posts" list for blogs.
 
 Use F<.md> for Markdown files. They will be formatted to HTML by the script. Files
 ending in F<.htm>, F<.html>, F<.xhtml>, or F<.xml> will be copied verbatim. Don't include
-the tag in the file where the content will go, though. For example, omit C<<body>>
+the tag in the file where the content will go, though. For example, omit C<E<lt>bodyE<gt>>>
 from your body.html file. Files that are treated specially by plexus.pl
 include:
 
