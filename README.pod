@@ -34,9 +34,25 @@ plexus.pl - A Perl-based static site generator.
 =head1 DESCRIPTION
 
 In Latin, I<plexus> means "twisted" or "woven". B<plexus.pl> takes a bunch of
-simple, modularized files and weaves them into a static web page ( so, OK, maybe it should be called I<plecto> or better yet, since it's a command, I<plecte> ).
+simple, modularized files and weaves them into a static web page ( so, OK,
+maybe it should be called I<plecto> or better yet, since it's a command,
+I<plecte> ). I'll be referring to the script "plexus.pl" simply as "plexus" for
+the rest of this documentation.
 
-At the time of writing, 04 August 2011, B<plexus> is far from completion and not really even ready for testing. Use at your own risk.
+At the time of writing, 04 August 2011, B<plexus> is far from completion and
+not really even ready for testing. Use at your own risk.
+
+=head2 How it works
+
+Plexus starts out by determining the working directory. This is either the
+first command-line argument ( `$ARGV[0]` ) or, if no argument is supplied, the
+current directory ( `$ENV{PWD}` ). Next, `File::Find` is used to make a list of
+all non-hidden directories inside the working directory. Plexus then descends
+into each of these directories and weaves a web page using the special files
+below.
+
+Future versions will have an option to generate a site-map ( using all .html
+files found inside the top directory ) and a "recent posts" list for blogs.
 
 =head1 FILES
 
