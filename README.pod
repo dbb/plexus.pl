@@ -45,34 +45,34 @@ not really even ready for testing. Use at your own risk.
 =head2 How it works
 
 Plexus starts out by determining the working directory. This is either the
-first command-line argument ( `$ARGV[0]` ) or, if no argument is supplied, the
-current directory ( `$ENV{PWD}` ). Next, `File::Find` is used to make a list of
+first command-line argument ( C<$ARGV[0]> ) or, if no argument is supplied, the
+current directory ( C<$ENV{PWD}> ). Next, C<File::Find> is used to make a list of
 all non-hidden directories inside the working directory. Plexus then descends
 into each of these directories and weaves a web page using the special files
 below.
 
-Future versions will have an option to generate a site-map ( using all .html
+Future versions will have an option to generate a site-map ( using all F<*.html>
 files found inside the top directory ) and a "recent posts" list for blogs.
 
 =head1 FILES
 
-Use .md for Markdown files. They will be formatted to HTML by the script. Files
-ending in .htm, .html, .xhtml, or .xml will be copied verbatim. Don't include
-the tag in the file where the content will go, though. For example, omit <body>
+Use F<.md> for Markdown files. They will be formatted to HTML by the script. Files
+ending in F<.htm>, F<.html>, F<.xhtml>, or F<.xml> will be copied verbatim. Don't include
+the tag in the file where the content will go, though. For example, omit C<<body>>
 from your body.html file. Files that are treated specially by plexus.pl
 include:
 
 =over 4
 
-=item * config		- Default config file location, using Config::File.
+=item config Default config file location, using Config::File.
 
-=item * config.yaml	- YAML config file, using Config::YAML.
+=item config.yaml YAML config file, using Config::YAML.
 
-=item * head.css	- CSS code to be included in the head.
+=item head.css code to be included in the head.
 
-=item * head.js		- JavaScript code to be included in the head.
+=item head.js JavaScript code to be included in the head.
 
-=item * nav.EXT    -  Inserted at the top of body as <nav>
+=item nav.EXT Inserted at the top of body as <nav>
 
 =back
 
