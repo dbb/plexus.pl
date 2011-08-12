@@ -10,12 +10,13 @@ use autodie;
 use Config::File;                 # Debian: libconfig-file-perl
 use File::Copy;
 use File::Find;
+use File::Rsync;                  # Debian: libfile-rsync-perl
 use Text::Markdown 'markdown';    # Debian: libtext-markdown-perl
 
 # global vars ###############################################################
 my $ch;                           # config hash
 my $out;
-
+my $rso;                          # Rsync Object
 my $top_dir = $ARGV[0] // $ENV{PWD};
 
 # abbreviations
@@ -246,8 +247,7 @@ sub head {
     for ( @styles ) {
         $header .=
               $is
-            . '<link rel="stylesheet" href="http://'
-            . 'fonts.googleapis.com/css?family='
+            . '<link type="text/css" rel="stylesheet" href="'
             . $_ . '" />' . "\n";
     } ## end for ( @styles )
 
@@ -255,7 +255,8 @@ sub head {
     for ( @fonts ) {
         $header .=
               $is
-            . '<link type="text/css" rel="stylesheet" href="'
+            . '<link rel="stylesheet" href="http://'
+            . 'fonts.googleapis.com/css?family='
             . $_ . '" />' . "\n";
     } ## end for ( @fonts )
 
@@ -380,6 +381,28 @@ sub intpl {
         return $_;
     }    # end for @_
 }    # end intpl
+#
+#
+#
+
+sub sync {
+    $rso = File::Rsync->new( {
+            archive => 1,
+            exclude-from => "$topdir/.gitignore"
+            rsh     => '/usr/bin/ssh',
+            verbose => 1,
+        }
+    );
+
+    my $rsrc = $ch->{'rsync_src'}   //  $topdir;
+    my $rdst = $ch->{'rsync_dest'}  //  '~';
+
+    $rso->exec( {
+        src     => $rsrc,
+        dest    => $rdst
+        } ) or warn "rsync failed: $!\n";
+
+} ## end sub sync
 
 #
 #
