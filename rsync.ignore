@@ -1,0 +1,23 @@
+# all hidden files
+.*
+
+# backup files
+*.orig
+
+# config files
+*config
+
+# header files
+*head.css
+*head.js
+
+# markdown files
+*.md
+
+# perltidy files
+*perltidy.LOG
+*.tdy
+*.ERR
+
+# this file
+*rsync.ignore

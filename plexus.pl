@@ -388,18 +388,18 @@ sub intpl {
 sub sync {
     $rso = File::Rsync->new( {
             archive => 1,
-            exclude-from => "$topdir/.gitignore"
+            'exclude-from' => "$top_dir/.gitignore",
             rsh     => '/usr/bin/ssh',
             verbose => 1,
         }
     );
 
-    my $rsrc = $ch->{'rsync_src'}   //  $topdir;
+    my $rsrc = $ch->{'rsync_src'}   //  $top_dir;
     my $rdst = $ch->{'rsync_dest'}  //  '~';
 
     $rso->exec( {
         src     => $rsrc,
-        dest    => $rdst
+        dest    => $rdst,
         } ) or warn "rsync failed: $!\n";
 
 } ## end sub sync

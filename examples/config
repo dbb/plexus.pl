@@ -17,12 +17,12 @@
 
 # Directories ###############################################################
 # Using ~ or $ENV{HOME} is fine.
-working_dir =   .
+working_dir =   ~/src/github/plexus.pl
 output_dir  =   .
 
 # Files #####################################################################
 # Use STDOUT if you just want to print the output to the console.
-output_file =   index.html
+output_file =   out.html
 # If you use these names, you don't need to set these values (plexus.pl will
 # read them by default)
 #body_file  =   body.md
@@ -35,8 +35,8 @@ output_file =   index.html
 #  <head>
 indentation     = 1
 
-domain          = dbbo.us
-page            = plexus.pl
+domain          = demus.co
+page            = Home
 
 # Values for doctype:
 # h5     ->     html  5 (default)
@@ -57,23 +57,15 @@ title           = $page - $domain
 author          = Daniel Bolton
 favicon         = /favicon.png
 # Space-separated list of stylesheets
-styles          = /css/light.css
+styles          = /css/default.css /css/alt.css
 # Space-separated list of Google Web Fonts. Use + for spaces in font names.
 google_fonts    = Cousine Play
 
 
 # Footer stuff
-copyright-year  = 2011
-license-name    = Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
-license-url     = http://creativecommons.org/licenses/by-nc-sa/3.0/
-
-# rsync options
-use_rsync = 1
-
-rsync_src  = ~/src/github/plexus.pl
-rsync_host = graffias.dreamhost.com
-rsync_user = dbbolton
-rsync_dest = $rsync_user@$rsync_host:/home/$rsync_user/$domain
+copyright_year  =   2011
+license_name    =   Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+license_url     =   http://creativecommons.org/licenses/by-nc-sa/3.0/
 
 # Custom vars
 # Names may only contain letters, numbers, _ and -
@@ -82,4 +74,3 @@ rsync_dest = $rsync_user@$rsync_host:/home/$rsync_user/$domain
 # Then, in body.md:
 # My string was $$example_var
 test_var = A-a_B-b_12
-

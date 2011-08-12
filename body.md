@@ -1,12 +1,9 @@
-Nav should be above this.
+# plexus.pl
+Github: <https://github.com/dbb/plexus.pl>
 
-This is the main text of the page to be generated.
+## Recent commits
 
-test\_var is: $$test_var
-
-###TODO
-1. Support multiple nav/footer/body files.
-1. Look into Windows portability
-
-Footer should be below this.
+<script src='http://gitlive.com/githublive.min.js'></script>
+<script>var GithubPush = {num_old:5,nodes:['dbb/plexus.pl']}</script>
+<div id='commits'></div>
 

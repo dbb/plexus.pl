@@ -1,2 +1,2 @@
-&copy; Copyright $$copyright_year $$author. This website is licensed under the [$$license_name]($$license_url)
+&copy; Copyright $$copyright-year $$author. This website is licensed under the [$$license-name]($$license-url)
 
