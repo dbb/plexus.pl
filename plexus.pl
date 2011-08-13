@@ -8,16 +8,18 @@ use strict;
 use warnings;
 use autodie;
 use Config::File;                 # Debian: libconfig-file-perl
+use Data::Dumper;
 use File::Copy;
 use File::Find;
 use File::Rsync;                  # Debian: libfile-rsync-perl
+use Getopt::Std;
 use Text::Markdown 'markdown';    # Debian: libtext-markdown-perl
 
 # global vars ###############################################################
 my $ch;                           # config hash
 my $out;
 my $rso;                          # Rsync Object
-my $top_dir = $ARGV[0] // $ENV{PWD};
+my $top_dir;
 
 # abbreviations
 my $cs;                           # CharSet
@@ -50,6 +52,17 @@ my %docs = (
 
 # end global vars ###########################################################
 
+# Command-line args
+my %opts;
+getopts( 'hrvd:', \%opts );
+print Dumper \%opts;
+
+&help('quit') if $opts{'h'};
+
+$top_dir = $opts{'d'} // $ENV{PWD};
+
+
+
 # Sub calls
 &find_dirs( $top_dir );
 
@@ -62,11 +75,23 @@ for ( @sub_dirs ) {
     my $head = &head;
     my $body = &body;
 
+
+
     print $out $head;
     print $out $body;
 
     close $out;
+
+    if ($ch->{'use_rsync'}) {
+        say "Syncing...";
+#        &sync;
+    }
+    else {
+        say "Not syncing.";
+    }
 }
+
+
 
 #my $head = &head;
 #my $body = &body;
@@ -100,6 +125,28 @@ sub find_dirs {
     my $dir = shift;
     find( \&wanted, $dir );
 } ## end sub find_dirs
+
+
+
+
+sub help {
+    my $quit = shift;
+print <<EOF;
+plexus.pl -[SWITCH] [VALUE]
+
+Argument switches:
+-d\t\tTop directory of site; default is \$ENV{PWD}
+
+Boolean switches:
+-r\t\tUse rsync with options in 'config'
+-v\t\tBe verbose;
+
+EOF
+
+    if ( $quit ) {
+        exit;
+    }
+}
 
 
 
@@ -369,12 +416,15 @@ sub intpl {
         #       return $_;
 
         # this is if a double sigil is used, $$var
-        while ( /\$\$([\w-]+)/ ) {
+        while ( /\$\$([a-zA-Z0-9]+)/ ) {
             my $key = $1;
+            say "----------found var: $key";
             if ( $ch->{ $key } ) {
+                say "----------got val: $ch->{$key}";
                 s/\$\$$key/$ch->{$key}/;
             }
             else {
+                say "----------NOT val: {$key}";
                 s/\$\$/&#36;&#36/;
             }
         } ## end while ( /\$\$([\w-]+)/ )
@@ -388,12 +438,14 @@ sub intpl {
 sub sync {
     $rso = File::Rsync->new( {
             archive => 1,
-            'exclude-from' => "$top_dir/.gitignore",
+            'exclude-from' => "$top_dir/rsync.ignore",
             rsh     => '/usr/bin/ssh',
             verbose => 1,
         }
     );
 
+    use Data::Dumper;
+    print Dumper $rso;
     my $rsrc = $ch->{'rsync_src'}   //  $top_dir;
     my $rdst = $ch->{'rsync_dest'}  //  '~';
 
