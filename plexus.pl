@@ -13,6 +13,7 @@ use File::Copy;
 use File::Find;
 use File::Rsync;                  # Debian: libfile-rsync-perl
 use Getopt::Std;
+use LWP::Simple;
 use Text::Markdown 'markdown';    # Debian: libtext-markdown-perl
 
 # global vars ###############################################################
@@ -54,12 +55,12 @@ my %docs = (
 
 # Command-line args
 my %opts;
-getopts( 'hrvd:', \%opts );
-print Dumper \%opts;
+getopts( 'Hhrvd:', \%opts );
 
-&help('quit') if $opts{'h'};
+&help( 'quit' ) if $opts{ 'h' };
+&doc            if $opts{ 'H' };
 
-$top_dir = $opts{'d'} // $ENV{PWD};
+$top_dir = $opts{ 'd' } // $ENV{ PWD };
 
 
 
@@ -72,7 +73,7 @@ for ( @sub_dirs ) {
     &defaults;
     &setup( $wd );
 
-    my $head = &head;
+    my $head = &build_head;
     my $body = &body;
 
 
@@ -82,14 +83,15 @@ for ( @sub_dirs ) {
 
     close $out;
 
-    if ($ch->{'use_rsync'}) {
+    if ( $ch->{ 'use_rsync' } ) {
         say "Syncing...";
-#        &sync;
+
+        #        &sync;
     }
     else {
         say "Not syncing.";
     }
-}
+} ## end for ( @sub_dirs )
 
 
 
@@ -120,18 +122,44 @@ sub defaults {
 #
 #
 #
+
+sub doc {
+    my $doc_url  = 'https://raw.github.com/dbb/plexus.pl/master/README.pod';
+    my $doc_file = '/tmp/plexus.pod';
+    my $lwp_status =
+        getstore( $doc_url, $doc_file );
+
+    if ( is_success( $lwp_status ) ) {
+        if ( `which perldoc` ) {
+            say "Launching perldoc...";
+            exec "perldoc $doc_file";
+        }
+        else {
+            say "Perldoc wasn't found. POD file located at '$doc_file'.";
+        }
+    } ## end if ( is_success( $lwp_status...))
+    else {
+        say "error downloading file: $lwp_status";
+        exit 1;
+    }
+} ## end sub doc
+
 #
+#
+#
+
 sub find_dirs {
     my $dir = shift;
     find( \&wanted, $dir );
-} ## end sub find_dirs
+}
 
-
-
+#
+#
+#
 
 sub help {
     my $quit = shift;
-print <<EOF;
+    print <<EOF;
 plexus.pl -[SWITCH] [VALUE]
 
 Argument switches:
@@ -141,15 +169,19 @@ Boolean switches:
 -r\t\tUse rsync with options in 'config'
 -v\t\tBe verbose;
 
+For complete documentation, run:
+% plexus.pl -H
+
 EOF
 
     if ( $quit ) {
         exit;
     }
-}
+} ## end sub help
 
-
-
+#
+#
+#
 
 sub load_configs {
     my $dir = shift;
@@ -188,10 +220,11 @@ sub load_configs {
 #
 #
 #
-#
+
 sub setup {
     my $dir = shift;
     say "setting up $dir";
+
     # Expand ~ to $HOME. Future versions will utilize File::HomeDir.
     s#~[/\s]#$ENV{HOME}/# for values %{ $ch };
 
@@ -202,13 +235,13 @@ sub setup {
         open $out, ">", $of;
     }
 
-}    # end &setup
+} ## end sub setup
 
 #
 #
 #
-#
-sub head {
+
+sub build_head {
     my $header;
 
     # If there's a head_file, we'll use it alone for <head>
@@ -330,12 +363,12 @@ sub head {
     $header .= "</head>\n";
     return $header;
 
-}    # end &head
+} ## end  sub head
 
 #
 #
 #
-#
+
 sub body {
     my $content = "<body>\n";
 
@@ -427,32 +460,36 @@ sub intpl {
                 say "----------NOT val: {$key}";
                 s/\$\$/&#36;&#36/;
             }
-        } ## end while ( /\$\$([\w-]+)/ )
+        } ## end while ( /\$\$([a-zA-Z0-9]+)/)
         return $_;
     }    # end for @_
 }    # end intpl
+
 #
 #
 #
 
 sub sync {
-    $rso = File::Rsync->new( {
-            archive => 1,
+    $rso = File::Rsync->new(
+        {
+            archive        => 1,
             'exclude-from' => "$top_dir/rsync.ignore",
-            rsh     => '/usr/bin/ssh',
-            verbose => 1,
+            rsh            => '/usr/bin/ssh',
+            verbose        => 1,
         }
     );
 
     use Data::Dumper;
     print Dumper $rso;
-    my $rsrc = $ch->{'rsync_src'}   //  $top_dir;
-    my $rdst = $ch->{'rsync_dest'}  //  '~';
+    my $rsrc = $ch->{ 'rsync_src' }  // $top_dir;
+    my $rdst = $ch->{ 'rsync_dest' } // '~';
 
-    $rso->exec( {
-        src     => $rsrc,
-        dest    => $rdst,
-        } ) or warn "rsync failed: $!\n";
+    $rso->exec(
+        {
+            src  => $rsrc,
+            dest => $rdst,
+        }
+    ) or warn "rsync failed: $!\n";
 
 } ## end sub sync
 
